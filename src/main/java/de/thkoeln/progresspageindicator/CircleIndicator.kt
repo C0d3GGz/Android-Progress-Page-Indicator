@@ -15,7 +15,7 @@ import android.util.DisplayMetrics
 import android.util.TypedValue
 
 //TODO: naming
-class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayout(con, attrs){
+internal class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayout(con, attrs){
 
     companion object {
         private const val DEFAULT_INNER_STROKE_COLOR_RES = android.R.color.darker_gray
