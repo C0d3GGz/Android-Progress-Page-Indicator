@@ -15,11 +15,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         app:circle_size="14dp"
-        app:inner_stroke_size="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:outer_stroke_size="2dp" />
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <de.thkoeln.progresspageindicator.CircleIndicator
         android:id="@+id/efwijoefwijo"
@@ -27,11 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         app:circle_size="14dp"
-        app:inner_stroke_size="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/dwq"
         app:layout_constraintStart_toEndOf="@+id/dwq"
-        app:layout_constraintTop_toTopOf="@+id/dwq"
-        app:outer_stroke_size="0dp" />
+        app:layout_constraintTop_toTopOf="@+id/dwq"/>
 
     <de.thkoeln.progresspageindicator.CircleIndicator
         android:id="@+id/dqwqq"
@@ -39,11 +35,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         app:circle_size="14dp"
-        app:inner_stroke_size="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/dqwqd"
         app:layout_constraintEnd_toStartOf="@+id/dqwqd"
-        app:layout_constraintTop_toTopOf="@+id/dqwqd"
-        app:outer_stroke_size="0dp" />
+        app:layout_constraintTop_toTopOf="@+id/dqwqd" />
 
     <de.thkoeln.progresspageindicator.CircleIndicator
         android:id="@+id/dqwqd"
@@ -51,11 +45,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         app:circle_size="14dp"
-        app:inner_stroke_size="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/dwqioqw"
         app:layout_constraintEnd_toStartOf="@+id/dwqioqw"
-        app:layout_constraintTop_toTopOf="@+id/dwqioqw"
-        app:outer_stroke_size="0dp" />
+        app:layout_constraintTop_toTopOf="@+id/dwqioqw" />
 
     <de.thkoeln.progresspageindicator.CircleIndicator
         android:id="@+id/dwq"
@@ -63,11 +55,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         app:circle_size="14dp"
-        app:inner_stroke_size="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/dwqioqw"
         app:layout_constraintStart_toEndOf="@+id/dwqioqw"
-        app:layout_constraintTop_toTopOf="@+id/dwqioqw"
-        app:outer_stroke_size="0dp" />
+        app:layout_constraintTop_toTopOf="@+id/dwqioqw" />
 
 
 </android.support.constraint.ConstraintLayout>

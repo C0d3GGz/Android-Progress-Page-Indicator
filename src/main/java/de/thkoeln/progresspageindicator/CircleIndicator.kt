@@ -11,6 +11,8 @@ import android.view.LayoutInflater
 import de.thkoeln.progresspageindicator.R.styleable.*
 import kotlinx.android.synthetic.main.circle_indicator.view.*
 import android.graphics.drawable.ColorDrawable
+import android.util.DisplayMetrics
+import android.util.Log
 import android.util.TypedValue
 
 class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayout(con, attrs){
@@ -19,8 +21,8 @@ class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayout(co
         private const val DEFAULT_INNER_STROKE_COLOR_RES = android.R.color.darker_gray
         private const val DEFAULT_OUTER_STROKE_COLOR_RES = R.color.colorAccent
         private const val DEFAULT_MAIN_COLOR_RES = android.R.color.holo_green_light //TODO
-        private const val DEFAULT_CIRCLE_DP = 14
-        private const val DEFAULT_STROKE_SIZE_DP = 2
+        private const val DEFAULT_CIRCLE_DP = 14f
+        private const val DEFAULT_STROKE_SIZE_DP = 2f
     }
 
     constructor(con: Context) : this(con, null)
@@ -33,22 +35,22 @@ class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayout(co
     var unvisitedColor = ContextCompat.getColor(con, DEFAULT_INNER_STROKE_COLOR_RES)
     var activeColor = ContextCompat.getColor(con, DEFAULT_OUTER_STROKE_COLOR_RES)
 
-    var circleSizeInDp : Int = DEFAULT_CIRCLE_DP
+    var circleSizeInDp : Float = DEFAULT_CIRCLE_DP
         set(value) { field = value; circleSizeInPixel = getRoundedPixel(value) }
 
-    var innerStrokeSizeInDp : Int = DEFAULT_STROKE_SIZE_DP
+    var innerStrokeSizeInDp : Float = DEFAULT_STROKE_SIZE_DP
         set(value) { field= value; innerStrokeSizeInPixel = getRoundedPixel(value)}
 
-    var outerStrokeSizeInDp : Int = DEFAULT_STROKE_SIZE_DP
+    var outerStrokeSizeInDp : Float  = DEFAULT_STROKE_SIZE_DP
         set(value) { field = value; outerStrokeSizeInPixel = getRoundedPixel(value) }
 
-    private var circleSizeInPixel = -1
+    private var circleSizeInPixel = getRoundedPixel(circleSizeInDp)
         set(value) { field = value; updateMainCircle() }
 
-    private var innerStrokeSizeInPixel = -1
+    private var innerStrokeSizeInPixel = getRoundedPixel(innerStrokeSizeInDp)
         set(value) { field = value; updateInnerCircle() }
 
-    private var outerStrokeSizeInPixel = 0
+    private var outerStrokeSizeInPixel = getRoundedPixel(outerStrokeSizeInDp)
         set(value) { field = value; updateOuterCircle() }
 
     init{
@@ -58,15 +60,18 @@ class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayout(co
             val a = con.theme.obtainStyledAttributes(attrs, R.styleable.CircleIndicator,
                     0 ,0)
 
-            //TODO: values get los in current impl
-            circleSizeInPixel = a.getDimensionPixelSize(
-                    CircleIndicator_circle_size, circleSizeInPixel)
+            //can't get raw dp, only pixel values
+            val circleSizeInPixelTmp =
+                    a.getDimensionPixelSize(CircleIndicator_circle_size, circleSizeInPixel)
+            circleSizeInDp = getDp(circleSizeInPixelTmp)
 
-            innerStrokeSizeInPixel = a.getDimensionPixelSize(
-                    CircleIndicator_inner_stroke_size, innerStrokeSizeInPixel)
+            val innerStrokeSizeInPixelTmp =
+                    a.getDimensionPixelSize(CircleIndicator_inner_stroke_size, innerStrokeSizeInPixel)
+            innerStrokeSizeInDp = getDp(innerStrokeSizeInPixelTmp)
 
-            outerStrokeSizeInPixel  = a.getDimensionPixelSize(
-                    CircleIndicator_outer_stroke_size, outerStrokeSizeInPixel )
+            val outerStrokeSizeInPixelTmp =
+                    a.getDimensionPixelSize(CircleIndicator_outer_stroke_size, outerStrokeSizeInPixel)
+            outerStrokeSizeInDp  = getDp(outerStrokeSizeInPixelTmp)
 
             visitedColor = a.getColor(CircleIndicator_visited_color, visitedColor)
             unvisitedColor = a.getColor(CircleIndicator_unvisited_color, unvisitedColor)
@@ -75,8 +80,9 @@ class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayout(co
 
         innerStrokeCircle.paint.color = unvisitedColor
         outerStrokeCircle.paint.color = activeColor
+
         setInactive()
-        setVisited()
+        setUnvisited()
     }
 
     private fun getBackgroundColor() : Int? {
@@ -130,20 +136,23 @@ class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayout(co
 
     fun setUnvisited(){
         //do not fill + grey stroke
-        innerStrokeSizeInPixel = getRoundedPixel(DEFAULT_STROKE_SIZE_DP)
         mainCircle.paint.color = getBackgroundColor() ?: Color.WHITE
+        innerStrokeSizeInPixel = getRoundedPixel(innerStrokeSizeInDp)
     }
 
     fun setActive(){
-        outerStrokeSizeInPixel = getRoundedPixel(DEFAULT_STROKE_SIZE_DP)
+        setVisited()
+        outerStrokeSizeInPixel = getRoundedPixel(outerStrokeSizeInDp)
     }
 
     fun setInactive(){
         outerStrokeSizeInPixel = 0
     }
 
-    private fun getRoundedPixel(dp: Int) : Int{
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                dp.toFloat(), resources.displayMetrics).toInt()
-    }
+    private fun getRoundedPixel(dp: Float) = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+            dp, resources.displayMetrics).toInt()
+
+    private fun getDp(pixel: Int) =
+        pixel.toFloat() / (resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
+
 }
