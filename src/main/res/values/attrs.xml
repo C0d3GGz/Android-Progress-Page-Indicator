@@ -5,8 +5,8 @@
         <attr name="inner_stroke_size" format="dimension" />
         <attr name="outer_stroke_size" format="dimension" />
         
-        <attr name="fill_color" format="color" /> <!-- aka parent view background color -->
-        <attr name="inner_stroke_color" format="color" />
-        <attr name="outer_stroke_color" format="color" />
+        <attr name="visited_color" format="color" />
+        <attr name="unvisited_color" format="color" />
+        <attr name="active_color" format="color" />
     </declare-styleable>
 </resources>
