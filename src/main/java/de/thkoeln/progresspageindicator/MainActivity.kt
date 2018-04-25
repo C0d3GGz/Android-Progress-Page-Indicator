@@ -2,7 +2,7 @@ package de.thkoeln.progresspageindicator
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_main.*
+import android.view.ViewGroup
 
 class MainActivity : AppCompatActivity() {
 
@@ -10,6 +10,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        dqwqq.setActive()
+        val progressIndicator = ProgressIndicator(this, 4)
+        val view = findViewById<ViewGroup>(android.R.id.content)
+
+        view.addView(progressIndicator)
+        progressIndicator.setActive(0)
+        progressIndicator.setVisited(3)
     }
 }

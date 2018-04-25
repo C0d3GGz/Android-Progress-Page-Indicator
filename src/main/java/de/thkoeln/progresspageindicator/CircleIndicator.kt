@@ -12,9 +12,9 @@ import de.thkoeln.progresspageindicator.R.styleable.*
 import kotlinx.android.synthetic.main.circle_indicator.view.*
 import android.graphics.drawable.ColorDrawable
 import android.util.DisplayMetrics
-import android.util.Log
 import android.util.TypedValue
 
+//TODO: naming
 class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayout(con, attrs){
 
     companion object {
@@ -141,7 +141,7 @@ class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayout(co
     }
 
     fun setActive(){
-        setVisited()
+//        setVisited()
         outerStrokeSizeInPixel = getRoundedPixel(outerStrokeSizeInDp)
     }
 
