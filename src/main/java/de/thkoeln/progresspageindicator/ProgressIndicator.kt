@@ -4,20 +4,22 @@ import android.content.Context
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.util.DisplayMetrics
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.indicator_container.view.*
 
-class ProgressIndicator private constructor(con : Context, attrs : AttributeSet?)
+class ProgressIndicator(con : Context, attrs : AttributeSet?)
     : LinearLayout(con, attrs){
 
     companion object {
         private const val DEFAULT_SPACE_BETWEEN_INDICATORS_DP = 8f
     }
 
-    private var viewPager : ViewPager? = null
+    private var viewPagerRes : Int = -1
     private var circleCount: Int = -1
     private var circles : MutableList<CircleIndicator> = mutableListOf()
     private var spaceBetweenIndicators : Int = -1
@@ -27,9 +29,15 @@ class ProgressIndicator private constructor(con : Context, attrs : AttributeSet?
 
         //viewPager, spaceBetweenIndicators, colors
         attrs?.let {
-            //get viewPagerAttribute
-            //circleCount = viewPager?.childCount
-            //throw err, if custom attribute viewPager is not given
+            val a = con.theme.obtainStyledAttributes(attrs, R.styleable.ProgressIndicator,
+                    0 ,0)
+
+            viewPagerRes = a.getResourceId(R.styleable.ProgressIndicator_viewpager, -1)
+            if(viewPagerRes == -1) {
+                //throw error
+                Log.e("debugg", "no view pager reference given :/")
+            }
+
         }
         // -> initialize fake values; e.g. 3 pager items for ide presentation purpose
     }
@@ -43,6 +51,30 @@ class ProgressIndicator private constructor(con : Context, attrs : AttributeSet?
         spaceBetweenIndicators = (getRoundedPixel(spaceBeweteenIndicatorsInDp).toFloat() / 2).toInt()
 
         initialize()
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+        if (viewPagerRes == -1) return
+
+        val viewPager = (parent as View).findViewById<ViewPager>(viewPagerRes)
+
+        circleCount = viewPager.adapter?.count ?: -1
+        initialize()
+
+        viewPager.addOnAdapterChangeListener({
+            innerViewPager, oldAdapter, newAdapter ->
+            circleCount = newAdapter?.count ?: -1
+            initialize()
+        })
+
+        viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener(){
+            override fun onPageSelected(position: Int) {
+                setActive(position)
+                setVisited(position)
+            }
+        })
     }
 
     private fun initialize(){

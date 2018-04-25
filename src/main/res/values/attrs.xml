@@ -9,4 +9,8 @@
         <attr name="unvisited_color" format="color" />
         <attr name="active_color" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="ProgressIndicator">
+        <attr name="viewpager" format="reference" />
+    </declare-styleable>
 </resources>

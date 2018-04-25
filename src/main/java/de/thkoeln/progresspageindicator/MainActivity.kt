@@ -2,7 +2,11 @@ package de.thkoeln.progresspageindicator
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentStatePagerAdapter
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -10,11 +14,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val progressIndicator = ProgressIndicator(this, 4)
-        val view = findViewById<ViewGroup>(android.R.id.content)
-
-        view.addView(progressIndicator)
-        progressIndicator.setActive(0)
-        progressIndicator.setVisited(3)
+        da_pager.adapter = SampleFragmentAdapter(supportFragmentManager)
     }
+}
+
+class SampleFragmentAdapter(fm : FragmentManager) : FragmentStatePagerAdapter(fm) {
+
+    val fragments : MutableList<Fragment> = mutableListOf()
+
+    init {
+        fragments.add(Fragment())
+        fragments.add(Fragment())
+    }
+
+    override fun getItem(position: Int) = fragments[position]
+    override fun getCount() = fragments.size
 }
