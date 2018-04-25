@@ -58,6 +58,7 @@ class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayout(co
             val a = con.theme.obtainStyledAttributes(attrs, R.styleable.CircleIndicator,
                     0 ,0)
 
+            //TODO: values get los in current impl
             circleSizeInPixel = a.getDimensionPixelSize(
                     CircleIndicator_circle_size, circleSizeInPixel)
 
@@ -72,6 +73,9 @@ class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayout(co
             activeColor = a.getColor(CircleIndicator_active_color, activeColor)
         }
 
+        innerStrokeCircle.paint.color = unvisitedColor
+        outerStrokeCircle.paint.color = activeColor
+        setInactive()
         setVisited()
     }
 
@@ -128,10 +132,15 @@ class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayout(co
         //do not fill + grey stroke
         innerStrokeSizeInPixel = getRoundedPixel(DEFAULT_STROKE_SIZE_DP)
         mainCircle.paint.color = getBackgroundColor() ?: Color.WHITE
-        innerStrokeCircle.paint.color = unvisitedColor
-
     }
-    //todo: setActive / setInactive - advanced indication
+
+    fun setActive(){
+        outerStrokeSizeInPixel = getRoundedPixel(DEFAULT_STROKE_SIZE_DP)
+    }
+
+    fun setInactive(){
+        outerStrokeSizeInPixel = 0
+    }
 
     private fun getRoundedPixel(dp: Int) : Int{
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
