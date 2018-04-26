@@ -3,9 +3,7 @@ package de.thkoeln.progresspageindicator
 import android.content.Context
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
-import android.util.DisplayMetrics
 import android.util.Log
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -16,6 +14,7 @@ class ProgressIndicator(con : Context, attrs : AttributeSet?)
     : LinearLayout(con, attrs){
 
     companion object {
+        private val TAG = ProgressIndicator::class.java.name
         private const val DEFAULT_SPACE_BETWEEN_INDICATORS_DP = 8f
     }
 
@@ -23,8 +22,7 @@ class ProgressIndicator(con : Context, attrs : AttributeSet?)
     private var circleCount: Int = -1
     private var circles : MutableList<CircleIndicator> = mutableListOf()
     private var spaceBetweenIndicators : Int = -1
-
-    private var latestPositon = 0
+    private var latestPosition = 0
 
     init {
         LayoutInflater.from(con).inflate(R.layout.indicator_container, this)
@@ -35,16 +33,16 @@ class ProgressIndicator(con : Context, attrs : AttributeSet?)
                     0 ,0)
 
             viewPagerRes = a.getResourceId(R.styleable.ProgressIndicator_viewpager, -1)
-            if(viewPagerRes == -1) Log.e("ProgressIndicator", "no view pager reference given :/")
+            if(viewPagerRes == -1) Log.e(TAG, "please provide a viewpager reference")
 
             val space = a.getDimensionPixelSize(
-                    R.styleable.ProgressIndicator_indicator_margin,
-                    getRoundedPixel(DEFAULT_SPACE_BETWEEN_INDICATORS_DP))
+                    R.styleable.ProgressIndicator_indicator_margin, DimensionHelper
+                    .getRoundedPixel(resources.displayMetrics, DEFAULT_SPACE_BETWEEN_INDICATORS_DP))
 
             spaceBetweenIndicators = (space.toFloat()/2).toInt()
 
         }
-        // -> initialize fake values; e.g. 3 pager items for ide presentation purpose
+        // TODO initialize fake values; e.g. 3 pager items for ide presentation purpose
     }
 
     constructor(con: Context,
@@ -53,7 +51,8 @@ class ProgressIndicator(con : Context, attrs : AttributeSet?)
             : this(con, null){
 
         circleCount = numberOfCircles
-        spaceBetweenIndicators = (getRoundedPixel(spaceBetweenIndicatorsInDp).toFloat() / 2).toInt()
+        spaceBetweenIndicators = (DimensionHelper.getRoundedPixel(resources.displayMetrics,
+                spaceBetweenIndicatorsInDp).toFloat() / 2).toInt()
 
         initialize()
     }
@@ -69,17 +68,15 @@ class ProgressIndicator(con : Context, attrs : AttributeSet?)
         initialize()
 
         viewPager.addOnAdapterChangeListener({
-            _, _, newAdapter ->
-            circleCount = newAdapter?.count ?: -1
+            _, _, newAdapter -> circleCount = newAdapter?.count ?: -1
             initialize()
         })
 
         viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener(){
             override fun onPageSelected(position: Int) {
-                setInactive(latestPositon)
+                setInactive(latestPosition)
                 setActive(position)
-                setVisited(position)
-                latestPositon = position
+                latestPosition = position
             }
         })
     }
@@ -95,25 +92,9 @@ class ProgressIndicator(con : Context, attrs : AttributeSet?)
             circles.add(circle)
         }
         setActive(0)
-        setVisited(0)
     }
 
-    fun setActive(position : Int){
-        circles[position].setActive()
-    }
+    fun setActive(position : Int) = circles[position].setActive()
+    fun setInactive(position: Int) = circles[position].setInactive()
 
-    fun setInactive(position: Int){
-        circles[position].setInactive()
-    }
-
-    fun setVisited(position: Int){
-        circles[position].setVisited()
-    }
-
-    //TODO: redundant code (make static or such)
-    private fun getRoundedPixel(dp: Float) = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-            dp, resources.displayMetrics).toInt()
-
-    private fun getDp(pixel: Int) =
-            pixel.toFloat() / (resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
 }

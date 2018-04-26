@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import de.thkoeln.progresspageindicator.R.styleable.*
 import kotlinx.android.synthetic.main.circle_indicator.view.*
 import android.graphics.drawable.ColorDrawable
-import android.util.DisplayMetrics
 import android.util.TypedValue
 
 //TODO: naming
@@ -128,20 +127,20 @@ internal class CircleIndicator(con : Context, attrs: AttributeSet?) : Constraint
         }
     }
 
-    fun setVisited(){
+    private fun setVisited(){
         //fill green
         innerStrokeSizeInPixel = 0
         mainCircle.paint.color = visitedColor
     }
 
-    fun setUnvisited(){
+    private fun setUnvisited(){
         //do not fill + grey stroke
         mainCircle.paint.color = getBackgroundColor() ?: Color.WHITE
         innerStrokeSizeInPixel = getRoundedPixel(innerStrokeSizeInDp)
     }
 
     fun setActive(){
-//        setVisited()
+        setVisited()
         outerStrokeSizeInPixel = getRoundedPixel(outerStrokeSizeInDp)
     }
 
@@ -149,10 +148,6 @@ internal class CircleIndicator(con : Context, attrs: AttributeSet?) : Constraint
         outerStrokeSizeInPixel = 0
     }
 
-    private fun getRoundedPixel(dp: Float) = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-            dp, resources.displayMetrics).toInt()
-
-    private fun getDp(pixel: Int) =
-        pixel.toFloat() / (resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
-
+    fun getRoundedPixel(dp: Float) = DimensionHelper.getRoundedPixel(resources.displayMetrics, dp)
+    fun getDp(pixel: Int) = DimensionHelper.getDp(resources.displayMetrics, pixel)
 }
