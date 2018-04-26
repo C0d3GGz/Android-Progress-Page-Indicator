@@ -20,11 +20,12 @@ class MainActivity : AppCompatActivity() {
 
 class SampleFragmentAdapter(fm : FragmentManager) : FragmentStatePagerAdapter(fm) {
 
-    val fragments : MutableList<Fragment> = mutableListOf()
+    val fragments : MutableList<JustAFragment> = mutableListOf()
 
     init {
-        fragments.add(Fragment())
-        fragments.add(Fragment())
+        fragments.add(JustAFragment.newInstance(1))
+        fragments.add(JustAFragment.newInstance(2))
+        fragments.add(JustAFragment.newInstance(3))
     }
 
     override fun getItem(position: Int) = fragments[position]

@@ -12,5 +12,6 @@
 
     <declare-styleable name="ProgressIndicator">
         <attr name="viewpager" format="reference" />
+        <attr name="indicator_margin" format="dimension" />
     </declare-styleable>
 </resources>

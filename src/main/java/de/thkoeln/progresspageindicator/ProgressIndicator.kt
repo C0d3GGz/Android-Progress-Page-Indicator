@@ -24,6 +24,8 @@ class ProgressIndicator(con : Context, attrs : AttributeSet?)
     private var circles : MutableList<CircleIndicator> = mutableListOf()
     private var spaceBetweenIndicators : Int = -1
 
+    private var latestPositon = 0
+
     init {
         LayoutInflater.from(con).inflate(R.layout.indicator_container, this)
 
@@ -33,10 +35,13 @@ class ProgressIndicator(con : Context, attrs : AttributeSet?)
                     0 ,0)
 
             viewPagerRes = a.getResourceId(R.styleable.ProgressIndicator_viewpager, -1)
-            if(viewPagerRes == -1) {
-                //throw error
-                Log.e("debugg", "no view pager reference given :/")
-            }
+            if(viewPagerRes == -1) Log.e("ProgressIndicator", "no view pager reference given :/")
+
+            val space = a.getDimensionPixelSize(
+                    R.styleable.ProgressIndicator_indicator_margin,
+                    getRoundedPixel(DEFAULT_SPACE_BETWEEN_INDICATORS_DP))
+
+            spaceBetweenIndicators = (space.toFloat()/2).toInt()
 
         }
         // -> initialize fake values; e.g. 3 pager items for ide presentation purpose
@@ -44,11 +49,11 @@ class ProgressIndicator(con : Context, attrs : AttributeSet?)
 
     constructor(con: Context,
                 numberOfCircles: Int,
-                spaceBeweteenIndicatorsInDp: Float = DEFAULT_SPACE_BETWEEN_INDICATORS_DP)
+                spaceBetweenIndicatorsInDp: Float = DEFAULT_SPACE_BETWEEN_INDICATORS_DP)
             : this(con, null){
 
         circleCount = numberOfCircles
-        spaceBetweenIndicators = (getRoundedPixel(spaceBeweteenIndicatorsInDp).toFloat() / 2).toInt()
+        spaceBetweenIndicators = (getRoundedPixel(spaceBetweenIndicatorsInDp).toFloat() / 2).toInt()
 
         initialize()
     }
@@ -64,15 +69,18 @@ class ProgressIndicator(con : Context, attrs : AttributeSet?)
         initialize()
 
         viewPager.addOnAdapterChangeListener({
-            innerViewPager, oldAdapter, newAdapter ->
+            _, _, newAdapter ->
             circleCount = newAdapter?.count ?: -1
             initialize()
         })
 
         viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener(){
             override fun onPageSelected(position: Int) {
+                setInactive(latestPositon)
                 setActive(position)
-                setVisited(position)
+                latestPositon = position
+
+//                setVisited(position)
             }
         })
     }
@@ -87,10 +95,16 @@ class ProgressIndicator(con : Context, attrs : AttributeSet?)
             the_indicator.addView(circle, layoutParams)
             circles.add(circle)
         }
+        circles[0].setActive()
+//        circles[0].setVisited()
     }
 
     fun setActive(position : Int){
         circles[position].setActive()
+    }
+
+    fun setInactive(position: Int){
+        circles[position].setInactive()
     }
 
     fun setVisited(position: Int){
