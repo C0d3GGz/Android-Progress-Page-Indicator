@@ -78,9 +78,8 @@ class ProgressIndicator(con : Context, attrs : AttributeSet?)
             override fun onPageSelected(position: Int) {
                 setInactive(latestPositon)
                 setActive(position)
+                setVisited(position)
                 latestPositon = position
-
-//                setVisited(position)
             }
         })
     }
@@ -95,8 +94,8 @@ class ProgressIndicator(con : Context, attrs : AttributeSet?)
             the_indicator.addView(circle, layoutParams)
             circles.add(circle)
         }
-        circles[0].setActive()
-//        circles[0].setVisited()
+        setActive(0)
+        setVisited(0)
     }
 
     fun setActive(position : Int){
