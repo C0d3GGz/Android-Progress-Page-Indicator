@@ -106,8 +106,9 @@ open class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayo
 
     private fun updateInnerCircle() {
         if(innerStrokeSizeInPixel == 0){
-            //TODO: fix this workaround to an acceptable solution
-            inner_circle_stroke.background = mainCircle //workaround
+            innerStrokeCircle.intrinsicWidth = 0
+            innerStrokeCircle.intrinsicHeight = 0
+            inner_circle_stroke.background = innerStrokeCircle
         }
         else{
             innerStrokeCircle.intrinsicHeight = circleSizeInPixel

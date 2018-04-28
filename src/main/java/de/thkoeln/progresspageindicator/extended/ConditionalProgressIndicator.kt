@@ -26,8 +26,6 @@ class ConditionalProgressIndicator(con: Context, attrs: AttributeSet)
         val visitedColor = ContextCompat.getColor(context, CircleIndicator.DEFAULT_MAIN_COLOR_RES)
         circles[position].visitedColor = visitedColor
         circles[position].setVisited()
-        circles[position].invalidate()
         conditionList[position] = true
-
     }
 }
