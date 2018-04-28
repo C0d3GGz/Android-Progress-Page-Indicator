@@ -1,4 +1,4 @@
-package de.thkoeln.progresspageindicator
+package de.thkoeln.progresspageindicator.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import de.thkoeln.progresspageindicator.R
 import de.thkoeln.progresspageindicator.extended.ConditionalProgressIndicator
 import kotlinx.android.synthetic.main.fragment2.*
 
@@ -16,7 +17,7 @@ class FragmentWithButton : Fragment() {
         fun newInstance(count: Int): FragmentWithButton {
             val fragment = FragmentWithButton()
             val args = Bundle()
-            args.putInt(FragmentWithButton.KEY, count)
+            args.putInt(KEY, count)
             fragment.arguments = args
             return fragment
         }
@@ -26,6 +27,7 @@ class FragmentWithButton : Fragment() {
         return inflater.inflate(R.layout.fragment2, container, false)
     }
 
+    //(TODO: for later sample make less dependent, currently very flaky)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 

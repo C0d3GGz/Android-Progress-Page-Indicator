@@ -1,13 +1,14 @@
-package de.thkoeln.progresspageindicator
+package de.thkoeln.progresspageindicator.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import de.thkoeln.progresspageindicator.R
 import kotlinx.android.synthetic.main.fragment.*
 
-class JustAFragment : Fragment(){
+open class JustAFragment : Fragment(){
 
     companion object {
         private const val KEY = "key"

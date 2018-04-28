@@ -151,6 +151,6 @@ open class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayo
         outerStrokeSizeInPixel = 0
     }
 
-    fun getRoundedPixel(dp: Float) = DimensionHelper.getRoundedPixel(resources.displayMetrics, dp)
-    fun getDp(pixel: Int) = DimensionHelper.getDp(resources.displayMetrics, pixel)
+    private fun getRoundedPixel(dp: Float) = DimensionHelper.getRoundedPixel(resources.displayMetrics, dp)
+    private fun getDp(pixel: Int) = DimensionHelper.getDp(resources.displayMetrics, pixel)
 }
