@@ -10,7 +10,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.indicator_container.view.*
 
-class ProgressIndicator(con : Context, attrs : AttributeSet?)
+open class ProgressIndicator(con : Context, attrs : AttributeSet?)
     : LinearLayout(con, attrs){
 
     companion object {
@@ -20,7 +20,7 @@ class ProgressIndicator(con : Context, attrs : AttributeSet?)
 
     private var viewPagerRes : Int = -1
     private var circleCount: Int = -1
-    private var circles : MutableList<CircleIndicator> = mutableListOf()
+    internal var circles : MutableList<CircleIndicator> = mutableListOf()
     private var spaceBetweenIndicators : Int = -1
     private var latestPosition = 0
 
@@ -43,18 +43,6 @@ class ProgressIndicator(con : Context, attrs : AttributeSet?)
 
         }
         // TODO initialize fake values; e.g. 3 pager items for ide presentation purpose
-    }
-
-    constructor(con: Context,
-                numberOfCircles: Int,
-                spaceBetweenIndicatorsInDp: Float = DEFAULT_SPACE_BETWEEN_INDICATORS_DP)
-            : this(con, null){
-
-        circleCount = numberOfCircles
-        spaceBetweenIndicators = (DimensionHelper.getRoundedPixel(resources.displayMetrics,
-                spaceBetweenIndicatorsInDp).toFloat() / 2).toInt()
-
-        initialize()
     }
 
     override fun onAttachedToWindow() {
@@ -81,7 +69,7 @@ class ProgressIndicator(con : Context, attrs : AttributeSet?)
         })
     }
 
-    private fun initialize(){
+    internal open fun initialize(){
 
         val layoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
         layoutParams.setMargins(spaceBetweenIndicators, 0, spaceBetweenIndicators, 0)

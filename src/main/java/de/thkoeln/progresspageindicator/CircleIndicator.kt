@@ -14,14 +14,14 @@ import android.graphics.drawable.ColorDrawable
 import android.util.TypedValue
 
 //TODO: naming
-internal class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayout(con, attrs){
+open class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayout(con, attrs){
 
     companion object {
-        private const val DEFAULT_INNER_STROKE_COLOR_RES = android.R.color.darker_gray
-        private const val DEFAULT_OUTER_STROKE_COLOR_RES = R.color.colorAccent
-        private const val DEFAULT_MAIN_COLOR_RES = android.R.color.holo_green_light //TODO
-        private const val DEFAULT_CIRCLE_DP = 14f
-        private const val DEFAULT_STROKE_SIZE_DP = 2f
+        internal const val DEFAULT_INNER_STROKE_COLOR_RES = android.R.color.darker_gray
+        internal const val DEFAULT_OUTER_STROKE_COLOR_RES = R.color.colorAccent
+        internal const val DEFAULT_MAIN_COLOR_RES = android.R.color.holo_green_light //TODO
+        internal const val DEFAULT_CIRCLE_DP = 14f
+        internal const val DEFAULT_STROKE_SIZE_DP = 2f
     }
 
     constructor(con: Context) : this(con, null)
@@ -106,6 +106,7 @@ internal class CircleIndicator(con : Context, attrs: AttributeSet?) : Constraint
 
     private fun updateInnerCircle() {
         if(innerStrokeSizeInPixel == 0){
+            //TODO: fix this workaround to an acceptable solution
             inner_circle_stroke.background = mainCircle //workaround
         }
         else{
@@ -127,10 +128,11 @@ internal class CircleIndicator(con : Context, attrs: AttributeSet?) : Constraint
         }
     }
 
-    private fun setVisited(){
+    internal fun setVisited(){
         //fill green
-        innerStrokeSizeInPixel = 0
         mainCircle.paint.color = visitedColor
+        innerStrokeCircle.paint.color = visitedColor //because of workaround
+        innerStrokeSizeInPixel = 0
     }
 
     private fun setUnvisited(){
