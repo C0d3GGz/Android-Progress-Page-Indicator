@@ -18,7 +18,7 @@ open class CircleIndicator(con : Context, attrs: AttributeSet?) : ConstraintLayo
 
     companion object {
         internal const val DEFAULT_INNER_STROKE_COLOR_RES = android.R.color.darker_gray
-        internal const val DEFAULT_OUTER_STROKE_COLOR_RES = R.color.colorAccent
+        internal val DEFAULT_OUTER_STROKE_COLOR_RES = R.color.colorAccent
         internal const val DEFAULT_MAIN_COLOR_RES = android.R.color.holo_green_light //TODO
         internal const val DEFAULT_CIRCLE_DP = 14f
         internal const val DEFAULT_STROKE_SIZE_DP = 2f

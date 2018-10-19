@@ -4,7 +4,7 @@
         <attr name="circle_size" format="dimension" />
         <attr name="inner_stroke_size" format="dimension" />
         <attr name="outer_stroke_size" format="dimension" />
-        
+
         <attr name="visited_color" format="color" />
         <attr name="unvisited_color" format="color" />
         <attr name="active_color" format="color" />
